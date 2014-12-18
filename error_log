@@ -1,0 +1,8 @@
+[02-Oct-2014 18:13:41 America/Chicago] PHP Fatal error:  Call to undefined function conf_path() in /usr/local/lib/drush/includes/bootstrap.inc on line 785
+[02-Oct-2014 18:17:23 America/Chicago] PHP Fatal error:  Call to undefined function conf_path() in /usr/local/lib/drush/includes/bootstrap.inc on line 785
+[02-Oct-2014 18:18:52 America/Chicago] PHP Fatal error:  Call to undefined function conf_path() in /usr/local/lib/drush/includes/bootstrap.inc on line 785
+[02-Oct-2014 18:22:09 America/Chicago] PHP Fatal error:  Call to undefined function conf_path() in /usr/local/lib/drush/includes/bootstrap.inc on line 785
+[02-Oct-2014 18:23:11 America/Chicago] PHP Fatal error:  Call to undefined function conf_path() in /usr/local/lib/drush/includes/bootstrap.inc on line 785
+[02-Oct-2014 18:30:29 America/Chicago] PHP Fatal error:  Call to undefined function conf_path() in /usr/local/lib/drush/includes/bootstrap.inc on line 785
+[02-Oct-2014 18:34:11 America/Chicago] PHP Fatal error:  Call to undefined function conf_path() in /usr/local/lib/drush/includes/bootstrap.inc on line 785
+[02-Oct-2014 21:03:29 America/Chicago] PHP Fatal error:  Call to undefined function conf_path() in /usr/local/lib/drush/includes/bootstrap.inc on line 785

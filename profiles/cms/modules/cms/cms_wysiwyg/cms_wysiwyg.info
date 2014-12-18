@@ -1,0 +1,32 @@
+name = CMS WYSIWYG
+core = 7.x
+package = CMS
+project = cms_wysiwyg
+dependencies[] = bean
+dependencies[] = block_shortcode
+dependencies[] = bs_shortcodes
+dependencies[] = features
+dependencies[] = file
+dependencies[] = file_entity
+dependencies[] = filter
+dependencies[] = media
+dependencies[] = media_internet
+dependencies[] = media_wysiwyg
+dependencies[] = shortcode
+dependencies[] = shortcode_wysiwyg
+dependencies[] = sooperthemes_basic_shortcodes
+dependencies[] = wysiwyg
+features[features_api][] = api:2
+features[filter][] = wysiwyg_full
+features[filter][] = wysiwyg_simple
+features[user_permission][] = access media browser
+features[wysiwyg][] = wysiwyg_full
+features[wysiwyg][] = wysiwyg_simple
+project path = sites/all/modules/cms
+
+; Information added by Drupal.org packaging script on 2014-12-11
+version = "7.x-1.0-beta15"
+core = "7.x"
+project = "cms_wysiwyg"
+datestamp = "1418317342"
+

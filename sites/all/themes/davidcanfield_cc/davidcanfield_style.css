@@ -1,0 +1,140 @@
+body {
+  background-color: #5d6670;
+  font-family:  Verdana, 'Lucida Grande', 'Lucida Sans Unicode', Lucida, Kalimati, Tahoma, Arial, sans-serif;
+  font-weight: normal;
+  line-height: 1.6em;
+  text-align: left; /* LTR */
+  margin: 0 auto;
+  font-size: .9em;
+  color: #000000;
+}
+
+h1{
+  font-size: 1.5em;
+}
+
+h2{
+  font-size: 1.4em;
+}
+
+h3{
+  font-size: 1.2em;
+}
+
+h4{
+  font-size: 1.0em;
+}
+
+h5{
+  font-size: .9em;
+}
+
+h6{
+  font-size: .8em;
+}
+
+em {
+  font-weight: bold;
+  font-style: italic;
+  font-size: 1.0em;
+  color: #77403a;
+}
+
+#content {
+  background: #e6e6e3;
+
+}
+
+.nodeimage { /* custom class manually entered into nodes by author */
+  margin: 5px 5px 5px 0;
+  padding: 3px;
+  border: 1px dotted #bdb39d;
+}
+
+.node-story {
+  background: #efefec;
+  padding: 5px;
+  margin: 3px;
+  border: 1px dotted #bdb39d;
+}
+
+.region-sidebar-first {
+  padding: 3px;
+  background: #efefec;
+  border: 1px dotted #bdb39d;
+}
+
+ .region-sidebar-first .block .content {
+  background: #efefec;
+  border: 0px;
+ }
+
+div.messages.status {
+  background: none repeat scroll 0 0 #cde1f7;
+  color: #000000;
+  border: 1px solid #000000;
+}
+
+#header-menu ul.menu li.last a {
+  color: #d1af6b;
+}
+
+#header-menu ul.menu li.last a:hover {
+  color: #1487d4;
+}
+
+.region-footer .block .content {
+  color: #d1af6b;
+}
+
+#footer {
+  padding: 0px;
+}
+
+.maintenance-page #logo {
+  background-color: #e6e6e3;
+}
+
+code {
+  font-family:  'Andale Mono',"Trebuchet MS", Courier, Arial, Monaco, sans-serif;
+  font-size: .95em;
+  border-width: 1px;
+  border-color: #0064D5;
+  border-style: dotted;
+  background: url(images/sbyte_code.jpg) no-repeat;
+  background-position:  top left;
+  background-color: #ffffff;
+  display:block;
+  width:auto;
+  min-height: 30px;
+  margin: 5px 15px 5px 15px;
+  padding: 5px;
+  overflow: auto;
+}
+
+cite {
+  font-family:  'Andale Mono',"Trebuchet MS", Courier, Arial, Monaco, sans-serif;
+  font-size: 1.1em;
+  margin:0px auto;
+  border-width: 1px;
+  border-color: #0064D5;
+  border-style: dotted;
+  width:auto;]
+  min-height: 30px;
+  display:block;
+  padding: 5px 5px 5px 35px;
+  background: url(images/sbyte_cite.jpg) no-repeat;
+  background-position:  top left;
+  background-color: #ffffff;
+  overflow: auto;
+}
+
+
+
+/*
+.field-name-body, .field-name-taxonomy-vocabulary-1, .links {
+  background: #fcfcfc;
+  padding: 5px;
+  margin: 3px;
+}
+*/

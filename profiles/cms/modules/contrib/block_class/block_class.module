@@ -1,0 +1,253 @@
+<?php
+
+/**
+ * @file
+ * Enhanced control over the CSS Classes of any Block.
+ *
+ * Block Class allows users to add classes to any block through the block's
+ * configuration interface. This implementation is based on an alteration of
+ * the Core block database table to leverage the Core Block API functions,
+ * objects and structure.
+ */
+
+/**
+ * Implements hook_menu() for the settings form and the autocomplete callback.
+ */
+function block_class_menu() {
+  $items['admin/config/content/blockclass'] = array(
+    'title' => 'Block Class',
+    'description' => 'Configure dropdown/predefined values for CSS classes.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('block_class_admin_form'),
+    'access arguments' => array('administer block classes settings'),
+    'type' => MENU_NORMAL_ITEM,
+  );
+  $items['blockclass/autocomplete'] = array(
+    'title' => 'Block Class Autocomplete',
+    'page callback' => '_block_class_get_values_autocomplete',
+    'access arguments' => array('administer block classes'),
+    'type' => MENU_CALLBACK,
+  );
+  return $items;
+}
+
+/**
+ * Creates the settings form.
+ */
+function block_class_admin_form() {
+  $form = array();
+  $form['block_class_widget'] = array(
+    '#type' => 'select',
+    '#title' => t('Widget'),
+    '#default_value' => variable_get('block_class_widget', 'textfield'),
+    '#options' => array('textfield' => t('Textfield'), 'dropdown' => t('Dropdown'), 'autocomplete' => t('Autocomplete')),
+    '#description' => t("By default the widget is textfield. Use dropdown when you only use one value. Use autocomplete when you want autocomplete on multiple values."),
+  );
+  $form['block_class_source'] = array(
+    '#type' => 'select',
+    '#title' => t('Source of the dropdown/autocomplete'),
+    '#default_value' => variable_get('block_class_source', 'database'),
+    '#options' => array('database' => t('Database'), 'predefined' => t('Predefined set of values')),
+    '#description' => t("By choosing database, it'll search every distinct set of values. Predefined set of values allows the administrator to arbitrary define the classes available."),
+  );
+  $form['block_class_predefined_values'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Predefined values'),
+    '#default_value' => variable_get('block_class_predefined_values', ''),
+    '#description' => t("Enter a list of classes separated by a space, comma, or line-break."),
+  );
+  $form['#attached']['js'][] = drupal_get_path('module', 'block_class') . '/block_class.js';
+  return system_settings_form($form);
+}
+
+
+/**
+ * Implements hook_permission().
+ */
+function block_class_permission() {
+  return array(
+    'administer block classes' => array(
+      'title' => t('Administer block classes'),
+      'description' => t('Set CSS classes for blocks.'),
+    ),
+    'administer block classes settings' => array(
+      'title' => t('Administer Block Class settings'),
+      'description' => t('Configure settings for CSS classes.'),
+    )
+  );
+}
+
+/**
+ * Implements theme_preprocess_block().
+ *
+ * Extend block's classes with any user defined classes.
+ */
+function block_class_preprocess_block(&$vars) {
+  $block = $vars['block'];
+  if (isset($block->css_class) && $block->css_class != '') {
+    $vars['classes_array'] = array_merge($vars['classes_array'], explode(' ', $block->css_class));
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ *
+ * Extend panel block's classes with any user defined classes.
+ */
+function block_class_preprocess_panels_pane(&$vars) {
+  if ($vars['pane']->type != 'block') {
+    return;
+  }
+  // Infer the block's $module and $delta from the pane subtype.
+  $block_parts = explode('-', $vars['pane']->subtype);
+  // Load the block based on the block parts.
+  $block = block_load($block_parts[0], $block_parts[1]);
+  // Add a generic 'module type' pane class.
+  $vars['classes_array'][] = drupal_html_class('pane-' . $block->module);
+  // Add $css_class to the $classes_array.
+  if (isset($block->css_class) && $block->css_class != '') {
+    $vars['classes_array'] = array_merge($vars['classes_array'], explode(' ', $block->css_class));
+  }
+}
+
+/**
+ * Implements hook_form_alter().
+ *
+ * Alter block edit form to add configuration field.
+ */
+function block_class_form_alter(&$form, &$form_state, $form_id) {
+  if (user_access('administer block classes') && ($form_id == 'block_admin_configure' || $form_id == 'block_add_block_form')) {
+    // Load statically cached block object used to display the form.
+    $block = block_load($form['module']['#value'], $form['delta']['#value']);
+    $default_value = isset($block->css_class) ? $block->css_class : '';
+
+    $form['settings']['css_class'] = array(
+      '#type' => 'textfield',
+      '#title' => t('CSS class(es)'),
+      '#default_value' => $default_value,
+      '#maxlength' => 255,
+    );
+
+        // Check the widget defined in the settings
+    $widget = variable_get('block_class_widget', 'textfield');
+    if ($widget == 'textfield') {
+      $form['settings']['css_class']['#type'] = 'textfield';
+      $form['settings']['css_class']['#description'] = t('Customize the styling of this block by adding CSS classes. Separate multiple classes by spaces.');
+    }
+    elseif ($widget == 'dropdown') {
+      $form['settings']['css_class']['#type'] = 'select';
+      $form['settings']['css_class']['#options'] = _block_class_get_values_dropdown($default_value);
+    }
+    elseif ($widget == 'autocomplete') {
+      $form['settings']['css_class']['#type'] = 'textfield';
+      $form['settings']['css_class']['#autocomplete_path'] = 'blockclass/autocomplete';
+    }
+
+    $form['#submit'][] = 'block_class_form_submit';
+  }
+}
+
+/**
+ * Helper function: additional submit callback for block configuration pages.
+ *
+ * Save supplied CSS classes.
+ */
+function block_class_form_submit($form, &$form_state) {
+  if ($form_state['values']['form_id'] == 'block_admin_configure' || $form_state['values']['form_id'] == 'block_add_block_form') {
+    // Only save if value has changed.
+    if (isset($form_state['values']['css_class']) && $form['settings']['css_class']['#default_value'] != $form_state['values']['css_class'] && user_access('administer blocks')) {
+      db_update('block')
+        ->fields(array('css_class' => $form_state['values']['css_class']))
+        ->condition('module', $form_state['values']['module'])
+        ->condition('delta', $form_state['values']['delta'])
+        ->execute();
+      // Flush all context module cache to use the updated css_class.
+      if (module_exists('context')) {
+        cache_clear_all('context', 'cache', TRUE);
+      }
+    }
+  }
+}
+
+/**
+ * Function to get all the values from the database/predefined and return them
+ * combined with the default value.
+ */
+function _block_class_get_values_dropdown($default) {
+  $result = array();
+  $result_keys = array();
+
+  // Check the source type.
+  $source = variable_get('block_class_source', 'database');
+  if ($source == 'database') {
+    $result = db_select('block', 'b')
+    ->fields('b', array('css_class'))
+    ->condition('css_class', '', '!=')
+    ->distinct()
+    ->execute()
+    ->fetchCol();
+  }
+  elseif ($source == 'predefined') {
+    // Gets the list of predefined values
+    $predefined = variable_get('block_class_predefined_values', '');
+    if (!empty($predefined)) {
+      $result = preg_split( "/[\s,]+/", $predefined);
+    }
+  }
+  if (!empty($default) && !in_array($default, $result)) {
+    array_unshift($result, $default);
+  }
+
+  // Let's define a way to not specify any class.
+  $result_keys = $result;
+  array_unshift($result_keys, '');
+  array_unshift($result, t('- No Class -'));
+  return array_combine($result_keys, $result);
+}
+
+/**
+ * Function to get the values from the database/predefined filtered by a keyword
+ */
+function _block_class_get_values_autocomplete($keywords) {
+  $result = array();
+  $matches = array();
+  $keywords_exploded = preg_split( "/[\s,]+/", $keywords);
+  $last_keyword = trim(array_pop($keywords_exploded));
+
+  // Check the source type.
+  $source = variable_get('block_class_source', 'database');
+  if ($source == 'database') {
+    $result = db_select('block', 'b')
+    ->fields('b', array('css_class'))
+    ->condition('css_class', '%' . $last_keyword . '%', 'LIKE')
+    ->condition('css_class', '', '!=')
+    ->distinct()
+    ->range(0, 20)
+    ->execute()
+    ->fetchCol();
+  }
+  elseif ($source == 'predefined') {
+    // Gets the list of predefined values
+    $predefined = variable_get('block_class_predefined_values', '');
+    if (!empty($predefined)) {
+      $data = preg_split( "/[\s,]+/", $predefined);
+      $result = array_filter($data, function ($item) use ($last_keyword) {
+        if (stripos($item, $last_keyword) !== FALSE) {
+          return TRUE;
+        }
+        return FALSE;
+      });
+      $result = array_slice($result, 0, 20);
+    }
+  }
+
+  // Prefix the results with previous data to allow autocomplete to run for
+  // every word
+  $prefix = count($keywords_exploded) ? implode(' ', $keywords_exploded) . ' ' : '';
+  foreach ($result as $class) {
+    $matches[$prefix . $class] = check_plain($class);
+  }
+
+  return drupal_json_output($matches);
+}
+

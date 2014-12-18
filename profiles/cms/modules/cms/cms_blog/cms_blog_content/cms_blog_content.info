@@ -1,0 +1,33 @@
+name = CMS Blog Content
+description = Demo content for CMS Blog module
+core = 7.x
+package = CMS
+project = cms_blog_content
+dependencies[] = cms_blog
+dependencies[] = ctools
+dependencies[] = features
+dependencies[] = strongarm
+dependencies[] = taxonomy
+dependencies[] = uuid_features
+__drupal_alter_by_ref[][node][blog] = blog
+features[ctools][] = strongarm:strongarm:1
+features[features_api][] = api:2
+features[taxonomy][] = tags
+features[uuid_node][] = 3a50d79f-9be6-4757-9ef1-64fbb7f3a71d
+features[uuid_node][] = bf5d3a53-dda2-4e38-987c-f7dddef167ab
+features[uuid_node][] = e148a564-679f-45bb-95b1-b488b315f897
+features[uuid_term][] = ac35b90b-36ac-4dbb-83fc-7031fe4d33e1
+features[uuid_term][] = d7f05657-27e1-47b5-97fc-cb0a767c523b
+features_exclude[dependencies][uuid] = uuid
+features_exclude[dependencies][bg_image_formatter] = bg_image_formatter
+features_exclude[dependencies][media] = media
+features_exclude[field_base][field_glazed_header_image] = field_glazed_header_image
+features_exclude[field_instance][node-blog-field_glazed_header_image] = node-blog-field_glazed_header_image
+project path = sites/all/modules/cms/cms_blog
+
+; Information added by Drupal.org packaging script on 2014-12-11
+version = "7.x-1.0-beta15"
+core = "7.x"
+project = "cms_blog"
+datestamp = "1418317348"
+

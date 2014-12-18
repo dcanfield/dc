@@ -1,0 +1,16 @@
+// Admin fixes for Drupal using Bootstrap
+body.admin-menu { margin-top: 28px !important;
+	.navbar-fixed-top { top:30px; }
+}
+#admin-menu, #admin-menu .dropdown, #admin-menu .dropdown li ul { z-index:9999; }
+#admin-menu .dropdown li li.expandable ul { margin-top:-29px; }
+.page-admin-structure-block {
+	tr.region-populated { display:none; }
+	.region-title { font-weight:bold; border-bottom:solid 1px #000; }
+}
+
+// selects fix
+.form-item-field-settings-granularity {
+	.option.checkbox.control-label { float:left; margin-right:2em; }
+	.help-block { clear:both; }
+}

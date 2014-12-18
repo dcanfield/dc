@@ -1,0 +1,28 @@
+name = davidcanfield_cc
+description = This is a sub-theme of CorporateClean
+version = VERSION
+core = 7.x
+base theme = corporateclean
+
+; Look for theming instructions at:
+;  http://wiki.morethanthemes.com/index.php?title=Corporate_Clean:Demonstration_Content_for_Drupal_7.x#Advanced_topics
+
+stylesheets[all][] = davidcanfield_style.css
+stylesheets[all][] = color/colors.css
+
+regions[navigation] = Navigation
+regions[search_area] = Search area
+regions[highlighted] = Highlighted
+regions[content] = Content
+regions[sidebar_first] = First sidebar
+regions[sidebar_second] = Second sidebar
+regions[banner] = Banner
+regions[footer_first] = Footer first
+regions[footer_second] = Footer second
+regions[footer_third] = Footer third
+regions[footer] = Footer
+regions[footer_bottom_right] = Footer bottom right
+regions[help] = Help
+regions[page_top] = Page top
+regions[page_bottom] = Page bottom
+

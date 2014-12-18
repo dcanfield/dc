@@ -1,0 +1,99 @@
+<?php
+
+/**
+ * @file
+ * External library handling for Drupal modules.
+ */
+
+/**
+ * Implements hook_init().
+ */
+function jsdelivr_init () {
+	if (variable_get('jsdelivr_js_libraries')) {
+		$jsdelivr_js_libraries = array_filter(explode("\n", variable_get('jsdelivr_js_libraries')));
+		$jsdelivr_js_libraries = implode(',', $jsdelivr_js_libraries);
+		$jsdelivr_url = url('http://cdn.jsdelivr.net/g/' . $jsdelivr_js_libraries);
+		drupal_add_js($jsdelivr_url, array('type' => 'external', 'group' => 'JS_LIBRARY'));
+	}
+	if (variable_get('jsdelivr_css_libraries')) {
+		$cssdelivr_css_libraries = array_filter(explode("\n", variable_get('jsdelivr_css_libraries')));
+		foreach ($cssdelivr_css_libraries as $value) {
+			$jsdelivr_url = url('http://cdn.jsdelivr.net/' . $value);
+			drupal_add_css($jsdelivr_url, array('type' => 'external', 'group' => 'CSS_DEFAULT'));
+		}
+	}
+}
+/**
+ * Implements hook_menu().
+ */
+function jsdelivr_menu() {
+  $items = array();
+  $items['admin/config/services/jsdelivr'] = array(
+    'title' => 'jsDelivr',
+    'description' => 'Configuration for jsDelivr',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('jsdelivr_settings_form'),
+    'access callback' => 'user_access',
+    'access arguments' => array('access administration pages'),
+    'type' => MENU_NORMAL_ITEM,
+  );
+  return $items;
+}
+
+/**
+ * For callback for admin settings
+ */
+function jsdelivr_settings_form($form, &$form_state) {
+  $form['jsdelivr_js_libraries'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Javascript Libraries'),
+    '#description' => t('Uses jsDeliver /g/ api for combined files. Enter one library per line as name@version. Examples: flexslider@2 or jquery.countto'),
+    '#default_value' => variable_get('jsdelivr_js_libraries', ''),
+  );
+  $form['jsdelivr_css_libraries'] = array(
+    '#type' => 'textarea',
+    '#title' => t('CSS Libraries'),
+    '#description' => t('Uses regular jsDelivr resources. Enter one file per line. Examples: animatecss/3/animate.min.css or fontawesome/4/css/font-awesome.min.css'),
+    '#default_value' => variable_get('jsdelivr_css_libraries', ''),
+  );
+  return system_settings_form($form);
+}
+
+/**
+ * Helper function for other modules to check if a library is present
+ */
+function jsdelivr_detect($library) {
+	$libraries = variable_get('jsdelivr_js_libraries') . variable_get('jsdelivr_css_libraries');
+	if (isset($library) && (strpos($libraries, $library) !== FALSE)) {
+		return TRUE;
+	}
+	else {
+		return FALSE;
+	}
+}
+
+/**
+ * Helper function for other modules to add a CSS library, accepts a library name with version alias
+ * example without version: animatecss
+ * example partial version: animatecss@3
+ * example specific version: animatecss@3.2.2
+ */
+function jsdelivr_add_css($library) {
+	$libraries = explode("\n", variable_get('jsdelivr_css_libraries'));
+	$libraries[] = $library;
+	$libraries = implode("\n", $libraries);
+	variable_set('jsdelivr_css_libraries', $libraries);
+}
+
+/**
+ * Helper function for other modules to add a JS library, accepts a library name with version alias
+ * example without version: wow
+ * example partial version: wow@1
+ * example specific version: wow@1.0.1
+ */
+function jsdelivr_add_js($library) {
+	$libraries = explode("\n", variable_get('jsdelivr_js_libraries'));
+	$libraries[] = $library;
+	$libraries = implode("\n", $libraries);
+	variable_set('jsdelivr_js_libraries', $libraries);
+}

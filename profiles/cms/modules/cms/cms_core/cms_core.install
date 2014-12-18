@@ -1,0 +1,80 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the CMS Blog module.
+ */
+
+/**
+ * Implements hook_requirements().
+ */
+function cms_core_requirements($phase) {
+  global $base_url;
+  $requirements = array();
+  // Ensure translations don't break at install time
+  $t = get_t();
+
+  // Test PHP memory_limit
+  $memory_limit = ini_get('memory_limit');
+  $requirements['php_memory_limit'] = array(
+    'title' => $t('PHP memory limit'),
+    'value' => $memory_limit == -1 ? t('-1 (Unlimited)') : $memory_limit,
+  );
+
+  if ($memory_limit && $memory_limit != -1 && parse_size($memory_limit) < parse_size('96M')) {
+    $description = '';
+    if ($phase == 'install') {
+      $description = $t('Drupal CMS Powerstart needs more memory to install. Increase your PHP memory limit to at least 96M to prevent errors in the installation process.');
+    }
+    elseif ($phase == 'update') {
+      $description = t('Drupal CMS Powerstart needs more memory to install. Increase your PHP memory limit to at least 96M to prevent errors in the installation process.');
+    }
+    elseif ($phase == 'runtime') {
+      $description = $t('Depending on your configuration, Drupal can run with a %memory_limit PHP memory limit. However, a %memory_minimum_limit PHP memory limit or above is recommended, especially if your site uses additional custom or contributed modules.', array('%memory_limit' => $memory_limit, '%memory_minimum_limit' => '96M'));
+    }
+
+    if (!empty($description)) {
+      if ($php_ini_path = get_cfg_var('cfg_file_path')) {
+        $description .= ' ' . $t('Increase the memory limit by editing the memory_limit parameter in the file %configuration-file and then restart your web server (or contact your system administrator or hosting provider for assistance).', array('%configuration-file' => $php_ini_path));
+      }
+      else {
+        $description .= ' ' . $t('Contact your system administrator or hosting provider for assistance with increasing your PHP memory limit.');
+      }
+
+      $requirements['php_memory_limit']['description'] = $description;
+      $requirements['php_memory_limit']['severity'] = REQUIREMENT_ERROR;
+    }
+  }
+
+  return $requirements;
+}
+
+/**
+ * Implements hook_install().
+ */
+function cms_core_install() {
+  // Making sure our image style overrides are loading
+  cms_core_load_image_style('large');
+  cms_core_load_image_style('medium');
+  cms_core_load_image_style('thumbnail');
+
+ // Enable some standard blocks.
+  $default_theme = variable_get('theme_default', 'bartik');
+  $values = array(
+    array(
+      'module' => 'menu',
+      'delta' => 'menu-footer-menu',
+      'theme' => $default_theme,
+      'status' => '1',
+      'weight' => '0',
+      'region' => 'footer',
+      'pages' => '',
+      'cache' => '-1',
+    ),
+  );
+  $query = db_insert('block')->fields(array('module', 'delta', 'theme', 'status', 'weight', 'region', 'pages', 'cache'));
+  foreach ($values as $record) {
+    $query->values($record);
+  }
+  $query->execute();
+}

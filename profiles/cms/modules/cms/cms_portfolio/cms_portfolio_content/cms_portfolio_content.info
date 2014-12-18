@@ -1,0 +1,40 @@
+name = CMS Portfolio Content
+description = Demo content for CMS Portfolio module
+core = 7.x
+package = CMS
+
+project = cms_portfolio_content
+dependencies[] = cms_portfolio
+dependencies[] = ctools
+dependencies[] = features
+dependencies[] = strongarm
+dependencies[] = uuid_features
+__drupal_alter_by_ref[][node][portfolio] = portfolio
+features[ctools][] = strongarm:strongarm:1
+features[features_api][] = api:2
+features[uuid_node][] = 0bb68ccf-c8ae-4865-b9d9-c936b6de797c
+features[uuid_node][] = 48a7475f-899f-4387-9bc0-aa92609b0af4
+features[uuid_node][] = 50936324-61c8-4e04-955d-3aac95f75006
+features[variable][] = comment_anonymous_portfolio
+features[variable][] = comment_default_mode_portfolio
+features[variable][] = comment_default_per_page_portfolio
+features[variable][] = comment_form_location_portfolio
+features[variable][] = comment_portfolio
+features[variable][] = comment_preview_portfolio
+features[variable][] = comment_subject_field_portfolio
+features[variable][] = menu_options_portfolio
+features[variable][] = menu_parent_portfolio
+features_exclude[dependencies][cms_blog] = cms_blog
+features_exclude[dependencies][media] = media
+features_exclude[dependencies][bg_image_formatter] = bg_image_formatter
+features_exclude[dependencies][sooperthemes_glazed_config] = sooperthemes_glazed_config
+features_exclude[field_base][field_glazed_header_image] = field_glazed_header_image
+features_exclude[field_instance][node-portfolio-field_glazed_header_image] = node-portfolio-field_glazed_header_image
+project path = sites/all/modules/cms/cms_portfolio
+
+; Information added by Drupal.org packaging script on 2014-12-11
+version = "7.x-1.0-beta15"
+core = "7.x"
+project = "cms_portfolio"
+datestamp = "1418317360"
+

@@ -1,0 +1,34 @@
+name = CMS News Content
+description = Demo content for CMS News module
+core = 7.x
+package = CMS
+
+project = cms_news_content
+dependencies[] = cms_news
+dependencies[] = ctools
+dependencies[] = features
+dependencies[] = strongarm
+dependencies[] = uuid_features
+__drupal_alter_by_ref[][node][news] = news
+features[ctools][] = strongarm:strongarm:1
+features[features_api][] = api:2
+features[uuid_node][] = 366d9b80-fbcb-4f16-a87e-b4c50ca95b8a
+features[uuid_node][] = a10b4337-5423-4b3f-9c42-7691387d5391
+features[uuid_node][] = ad9fcff4-3b21-4867-a73d-110b4858e9df
+features[variable][] = comment_anonymous_news
+features[variable][] = comment_default_mode_news
+features[variable][] = comment_default_per_page_news
+features[variable][] = comment_form_location_news
+features[variable][] = comment_news
+features[variable][] = comment_preview_news
+features[variable][] = comment_subject_field_news
+features[variable][] = menu_options_news
+features[variable][] = menu_parent_news
+project path = sites/all/modules/cms/cms_news
+
+; Information added by Drupal.org packaging script on 2014-12-11
+version = "7.x-1.0-beta15"
+core = "7.x"
+project = "cms_news"
+datestamp = "1418317350"
+

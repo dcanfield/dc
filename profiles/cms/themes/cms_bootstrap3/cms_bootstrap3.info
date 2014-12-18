@@ -1,0 +1,29 @@
+name = CMS Bootstrap
+description = Simple Bootstrap 3, sass-based theme for Drupal CMS powerstart
+core = 7.x
+base theme = bootstrap
+
+; Based on https://www.drupal.org/sandbox/BrianDanin/2116345
+
+; Regions
+regions[navigation]     = 'Navigation'
+regions[header]         = 'Top Bar'
+regions[highlighted]    = 'Highlighted'
+regions[help]           = 'Help'
+regions[content]        = 'Content'
+regions[sidebar_first]  = 'Primary'
+regions[sidebar_second] = 'Secondary'
+regions[footer]         = 'Footer'
+
+; Stylesheets
+stylesheets[all][] = css/styles.css
+scripts[]         = styles.js
+
+settings[bootstrap_cdn] = '3.2.0'
+
+; Information added by Drupal.org packaging script on 2014-10-13
+version = "7.x-1.0-beta3"
+core = "7.x"
+project = "cms_bootstrap3"
+datestamp = "1413214132"
+

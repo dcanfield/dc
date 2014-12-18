@@ -1,0 +1,42 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the CMS Blog module.
+ */
+
+
+/**
+ * Implements hook_install().
+ */
+// function cms_blog_install() {
+//  // Enable some standard blocks.
+//   $default_theme = variable_get('theme_default', 'bartik');
+//   $values = array(
+//     array(
+//       'module' => 'tagclouds',
+//       'delta' => '1',
+//       'theme' => $default_theme,
+//       'status' => '1',
+//       'weight' => '0',
+//       'region' => 'sidebar_second',
+//       'pages' => "blog\nblog/*\ntags/*",
+//       'cache' => -'1',
+//     ),
+//     array(
+//       'module' => 'views',
+//       'delta' => 'cms_blog-blog_authors',
+//       'theme' => $default_theme,
+//       'status' => '1',
+//       'weight' => '0',
+//       'region' => 'sidebar_second',
+//       'pages' => "blog\nblog/*\ntags/*",
+//       'cache' => '-1',
+//     ),
+//   );
+//   $query = db_insert('block')->fields(array('module', 'delta', 'theme', 'status', 'weight', 'region', 'pages', 'cache'));
+//   foreach ($values as $record) {
+//     $query->values($record);
+//   }
+//   $query->execute();
+// }

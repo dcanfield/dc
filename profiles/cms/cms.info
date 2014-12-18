@@ -1,0 +1,162 @@
+name = cms
+distribution_name = cms
+description = Drupal distribution with production ready CMS features
+core = 7.x
+
+; Core
+; ----
+dependencies[] = block
+dependencies[] = comment
+dependencies[] = contextual
+dependencies[] = color
+dependencies[] = dashboard
+dependencies[] = dblog
+dependencies[] = field
+dependencies[] = field_sql_storage
+dependencies[] = field_ui
+dependencies[] = file
+dependencies[] = filter
+dependencies[] = help
+dependencies[] = image
+dependencies[] = list
+dependencies[] = menu
+dependencies[] = node
+dependencies[] = number
+dependencies[] = options
+dependencies[] = path
+dependencies[] = rdf
+dependencies[] = search
+dependencies[] = shortcut
+dependencies[] = system
+dependencies[] = taxonomy
+dependencies[] = text
+dependencies[] = toolbar
+dependencies[] = update
+dependencies[] = user
+
+; CMS Core
+; ----
+dependencies[] = bean
+dependencies[] = block_class
+dependencies[] = cms_core
+dependencies[] = ctools
+dependencies[] = elements
+dependencies[] = entity
+dependencies[] = features
+dependencies[] = fences
+dependencies[] = file_entity
+dependencies[] = globalredirect
+dependencies[] = html5_tools
+dependencies[] = honeypot
+dependencies[] = metatag
+dependencies[] = metatag_views
+dependencies[] = metatag_views_overview
+dependencies[] = module_filter
+dependencies[] = pathauto
+dependencies[] = strongarm
+dependencies[] = token
+dependencies[] = uuid
+dependencies[] = uuid_features
+dependencies[] = views
+dependencies[] = views_ui
+variables[admin_theme] = seven
+variables[theme_default] = nexus
+theme = nexus
+variables[fences_default_classes] = 1
+variables[fences_default_markup] = 1
+variables[honeypot_protect_all_forms] = 1
+variables[honeypot_protect_all_forms] = 1
+variables[html5_tools_override_views_field_rewrite_elements] = 1
+variables[image_jpeg_quality] = 100
+variables[jquery_update_jquery_cdn] = google
+variables[jquery_update_jquery_version] = 1.8
+variables[site_name] = Powerstart
+variables[update_check_disabled] = 0
+variables[update_check_frequency] = 1
+variables[update_notification_threshold] = security
+variables[user_picture_default] = profiles/cms/def-profile-pic.png
+variables[user_picture_dimensions] = 1024x1024
+variables[user_picture_file_size] = 1
+variables[user_picture_style] = thumbnail
+variables[user_pictures] = 1
+variables[user_register] = USER_REGISTER_ADMINISTRATORS_ONLY
+
+
+; CMS Blog
+; -------
+
+dependencies[] = cms_blog
+dependencies[] = tagclouds
+
+; CMS Contact
+; -------
+
+dependencies[] = cms_contact
+dependencies[] = webform
+variables[pathauto_node_webform_pattern] = [node:title]
+
+; CMS Events
+; -------
+
+dependencies[] = cms_events
+dependencies[] = addressfield
+dependencies[] = addressfield_tokens
+dependencies[] = date
+dependencies[] = date_api
+dependencies[] = date_views
+dependencies[] = date_popup
+dependencies[] = date_all_day
+dependencies[] = filefield_sources
+dependencies[] = filefield_sources_plupload
+dependencies[] = libraries
+variables[pathauto_node_event_pattern] = [node:title]
+
+; CMS News
+; -------
+
+dependencies[] = cms_news
+
+; CMS Performance
+; -------
+
+dependencies[] = cms_performance
+dependencies[] = entitycache
+variables[block_cache] = 1
+variables[cache] = 1
+variables[entitycache_enabled] = 1
+variables[page_cache_maximum_age] = 86400
+variables[page_compression] = 1
+variables[preprocess_css] = 1
+variables[preprocess_js] = 1
+
+; CMS Portfolio
+; -------
+
+dependencies[] = cms_portfolio
+dependencies[] = filefield_sources
+dependencies[] = filefield_sources_plupload
+dependencies[] = image_field_caption
+dependencies[] = image_url_formatter
+dependencies[] = libraries
+dependencies[] = plupload
+dependencies[] = views_bootstrap
+
+; CMS WYSIWYG
+; -------
+
+dependencies[] = block_shortcode
+dependencies[] = bs_shortcodes
+dependencies[] = cms_wysiwyg
+dependencies[] = media
+dependencies[] = media_internet
+dependencies[] = shortcode
+dependencies[] = shortcode_wysiwyg
+dependencies[] = sooperthemes_basic_shortcodes
+dependencies[] = wysiwyg
+
+; Information added by Drupal.org packaging script on 2014-12-12
+version = "7.x-1.0-beta15"
+core = "7.x"
+project = "cms"
+datestamp = "1418375367"
+

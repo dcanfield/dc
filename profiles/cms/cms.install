@@ -1,0 +1,200 @@
+<?php
+
+//make sure we have more memory than 196M. if not lets try to increase it.
+if (ini_get('memory_limit') != '-1' && ini_get('memory_limit') <= '196M' && ini_get('memory_limit') >= '32M') {
+  ini_set('memory_limit', '196M');
+}
+ini_set('max_execution_time', '120');
+$max_nesting_level = ini_get('xdebug.max_nesting_level');
+if ($max_nesting_level > 0 && $max_nesting_level <= '200') {
+  ini_set('xdebug.max_nesting_level', 200);
+}
+
+function cms_install(&$tasks, &$install_state) {
+
+  $cms_theme = 'nexus';
+
+  module_enable(array('cms_blog_content'));
+
+  module_enable(array('cms_events_content'));
+
+  module_enable(array('cms_news_content'));
+
+  module_enable(array('cms_portfolio_content'));
+
+  module_enable(array('cms_core_content'));
+
+  // install blocks, we need to do it here because the install files inside
+  // the modules run to early in the installation process for this to work.
+  $values = array();
+
+  if (module_exists('cms_core_content')) {
+    $values[] = array(
+      'module' => 'bean',
+      'delta' => 'preblock-1-time-saver-icon-white',
+      'theme' => $cms_theme,
+      'status' => '1',
+      'visibility' => '0',
+      'weight' => '0',
+      'region' => 'preface_first',
+      'pages' => '',
+      'title' => '<none>',
+      'cache' => '-1',
+      'css_class' => '',
+    );
+    $values[] = array(
+      'module' => 'bean',
+      'delta' => 'preblock-2-shortcodes-icon-white',
+      'theme' => $cms_theme,
+      'status' => '1',
+      'visibility' => '0',
+      'weight' => '0',
+      'region' => 'preface_middle',
+      'pages' => '',
+      'title' => '<none>',
+      'cache' => '-1',
+      'css_class' => '',
+    );
+    $values[] = array(
+      'module' => 'bean',
+      'delta' => 'preblock-3-bootstrap-icon-white',
+      'theme' => $cms_theme,
+      'status' => '1',
+      'visibility' => '0',
+      'weight' => '0',
+      'region' => 'preface_last',
+      'pages' => '',
+      'title' => '<none>',
+      'cache' => '-1',
+      'css_class' => '',
+    );
+  }
+  if (module_exists('cms_blog')) {
+    $values[] = array(
+      'module' => 'views',
+      'delta' => 'cms_blog-recent_blog_posts',
+      'theme' => $cms_theme,
+      'status' => '1',
+      'visibility' => '0',
+      'weight' => '-5',
+      'region' => 'footer_first',
+      'pages' => '',
+      'title' => '',
+      'cache' => '-1',
+      'css_class' => '',
+    );
+    $values[] = array(
+      'module' => 'tagclouds',
+      'delta' => '1',
+      'theme' => $cms_theme,
+      'status' => '1',
+      'visibility' => '1',
+      'weight' => '0',
+      'region' => 'sidebar_first',
+      'pages' => "blog\nblog/*\ntags/*",
+      'title' => 'Tags',
+      'cache' => '-1',
+      'css_class' => 'well',
+    );
+    $values[] = array(
+      'module' => 'views',
+      'delta' => 'cms_blog-blog_authors',
+      'theme' => $cms_theme,
+      'status' => '1',
+      'visibility' => '1',
+      'weight' => '0',
+      'region' => 'sidebar_first',
+      'pages' => "blog\nblog/*\ntags/*",
+      'title' => '',
+      'cache' => '-1',
+      'css_class' => '',
+    );
+  }
+  if (module_exists('cms_events')) {
+    $values[] = array(
+      'module' => 'views',
+      'delta' => 'cms_events-upcoming_events',
+      'theme' => $cms_theme,
+      'status' => '1',
+      'visibility' => '0',
+      'weight' => '-4',
+      'region' => 'footer_second',
+      'pages' => '',
+      'title' => '',
+      'cache' => '-1',
+      'css_class' => '',
+    );
+    $values[] = array(
+      'module' => 'views',
+      'delta' => 'cms_events-monthly_archive',
+      'theme' => $cms_theme,
+      'status' => '1',
+      'visibility' => '1',
+      'weight' => '0',
+      'region' => 'sidebar_first',
+      'pages' => "events\nevents/*\nevents-archive\nevents-archive/*",
+      'title' => 'Events Archive',
+      'cache' => '-1',
+      'css_class' => 'well',
+    );
+  }
+  if (module_exists('cms_news')) {
+    $values[] = array(
+      'module' => 'views',
+      'delta' => 'cms_news-block',
+      'theme' => $cms_theme,
+      'status' => '1',
+      'visibility' => '0',
+      'weight' => '-3',
+      'region' => 'footer_third',
+      'pages' => '',
+      'title' => '',
+      'cache' => '-1',
+      'css_class' => '',
+    );
+  }
+  if (module_exists('cms_portfolio')) {
+    $values[] = array(
+      'module' => 'views',
+      'delta' => 'cms_portfolio-portfolio_block',
+      'theme' => $cms_theme,
+      'status' => '1',
+      'visibility' => '1',
+      'weight' => '-2',
+      'region' => 'content',
+      'pages' => '<front>',
+      'title' => '',
+      'cache' => '-1',
+      'css_class' => 'clear-both',
+    );
+  }
+
+  $query = db_insert('block')->fields(array('module', 'delta', 'theme', 'status', 'visibility', 'weight', 'region', 'pages', 'title', 'cache', 'css_class'));
+  foreach ($values as $record) {
+    $query->values($record);
+  }
+  $query->execute();
+
+  if (module_exists('cms_core_content')) {
+   module_load_include('module', 'features');
+   features_revert(array('cms_core_content' => array('menu_links')));
+   drupal_flush_all_caches();
+  }
+
+  module_load_include('inc', 'pathauto');
+  module_load_include('inc', 'pathauto.pathauto');
+  $nids = db_query("SELECT nid FROM {node}")->fetchCol();
+  pathauto_node_update_alias_multiple($nids, 'bulkupdate');
+
+  $system_path = _cms_get_node_path_for_uuid('d6b1dd5c-9212-4468-9a64-e6e674ca32b7');
+  variable_set('site_frontpage', $system_path);
+
+}
+
+function _cms_get_node_path_for_uuid($uuid) {
+  // module_load_include('inc', 'uuid', 'uuid.entity');
+  module_load_include('module', 'uuid');
+  $nid = entity_get_id_by_uuid('node', array($uuid));
+  $system_path = 'node/' . array_pop($nid);
+  return $system_path;
+}

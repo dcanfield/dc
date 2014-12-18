@@ -1,0 +1,410 @@
+<?php
+/**
+ * @file
+ * Code for the CMS Core feature.
+ */
+
+include_once 'cms_core.features.inc';
+
+
+/**
+ * Implements hook_menu().
+ */
+function cms_core_menu() {
+  $items = array();
+  $items['admin/powerstart'] = array(
+    'title' => 'CMS Powerstart Dashboard',
+    'description' => 'Dashboard for Drupal CMS Powerstart',
+    'page callback' => 'powerstart_dashboard',
+    'page arguments' => array('powerstart_page'),
+    'access callback' => 'user_access',
+    'access arguments' => array('access administration pages'),
+    'weight' => -6,
+    'type' => MENU_NORMAL_ITEM,
+  );
+  return $items;
+}
+
+
+/**
+ * Implements hook_init().
+ */
+function cms_core_init() {
+  if (variable_get('cms_core_bootstrap_load') && !path_is_admin(current_path())) {
+    $bootstrap_css = url('http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css');
+    drupal_add_css($bootstrap_css, array('type' => 'external', 'group' => 'CSS_DEFAULT'));
+    $bootstrap_js = url('http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js');
+    drupal_add_js($bootstrap_js, array('type' => 'external', 'group' => 'JS_LIBRARY'));
+  }
+  if (variable_get('cms_core_bootstrap_compatibility_mode')) {
+    drupal_add_css(drupal_get_path('module', 'cms_core') . '/cms-core-bootstrap-hacks.css', array('group' => CSS_THEME, 'every_page' => TRUE, 'weight' => 10));
+  }
+}
+
+/**
+ * Implements hook_menu_alter().
+ *
+ * Provide empty page callback
+ */
+function cms_core_menu_alter(&$items) {
+  unset($items['node']);
+}
+
+function cms_core_load_image_style($image_style_name){
+  $image_style = image_style_load($image_style_name);
+   image_default_style_save($image_style);
+}
+
+/**
+ * Implements hook_node_view_alter().
+ * Removing add-comment link from every teaser
+ */
+function cms_core_node_view_alter(&$build){
+  if ($build['#view_mode'] == 'teaser') {
+    // Remove "Add new comment" link
+    unset($build['links']['comment']['#links']['comment-add']);
+    unset($build['links']['comment']['#links']['comment_forbidden']);
+  }
+}
+
+// Remove log in to comments link from every coments
+function cms_core_comment_view($comment, $view_mode, $langcode) {
+  if ($view_mode == 'full') {
+    unset($comment->content['links']['comment']['#links']['comment_forbidden']);
+	}
+}
+
+
+
+/**
+ * Form to select the administration theme.
+ *
+ * @ingroup forms
+ * @see system_themes_admin_form_submit()
+ */
+function powerstart_admin_form($form, &$form_state) {
+  // Administration theme settings.
+  $form['cms_core_bootstrap'] = array(
+    '#type' => 'fieldset',
+    '#description' => t('To get the full benefit of CMS Powerstart and the included bootstrap shortcodes you need to load Bootstrap 3. Turn this on if your theme is not based on bootstrap and you don\'t already load bootstrap 3 anywhere else in your site.'),
+    '#title' => t('Bootstrap 3'),
+  );
+  $form['cms_core_bootstrap']['cms_core_bootstrap_load'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Load Bootstrap 3 (except in admin pages). '),
+    '#default_value' => variable_get('cms_core_bootstrap_load', '0'),
+  );
+  $form['cms_core_bootstrap']['cms_core_bootstrap_compatibility_mode'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Compatibility mode. Enable this if you are seeing layout or spacing issues in your theme after enabling Bootstrap.'),
+    '#default_value' => variable_get('cms_core_bootstrap_compatibility_mode', '0'),
+  );
+  $form['cms_core_bootstrap']['actions'] = array('#type' => 'actions');
+  return system_settings_form($form);
+}
+
+/**
+ * Menu callback; displays CMS Powerstart Dashboard
+ */
+function powerstart_dashboard() {
+
+  $path = drupal_get_path('module', 'cms_core');
+  drupal_add_js($path . '/styles.admin.js', array('weight' => 1));
+  drupal_add_js('');
+  $output = '';
+
+  $powerstart_admin_form = drupal_get_form('powerstart_admin_form');
+  $output .= drupal_render($powerstart_admin_form);
+
+  $output .= '<h2>' . t('Official Powerstart themes') . '</h2><br />';
+
+  $output .= '<h3 style="clear:both;">' . t('Premium Themes by SooperThemes') . '</h3>';
+
+  $themes_list = array(
+    'glazed' => array(
+      'Glazed Multi-Purpose',
+      'http://www.sooperthemes.com/sites/default/files/product-images/main-screenshot/Displays-Glazed_3.jpg',
+      'http://glazed-demo.sooperthemes.com/',
+      'http://civinex.nl',
+    ),
+    'respondr' => array(
+      'Respondr',
+      'http://www.sooperthemes.com/sites/default/files/product-images/main-screenshot/respondr-iphone-swipe_0.jpg',
+      'http://switcher.sooperthemes.com/?theme=respondr',
+      'https://www.ischool.utexas.edu/',
+    ),
+    'lumi' => array(
+      'Lumi',
+      'http://www.sooperthemes.com/sites/default/files/product-images/main-screenshot/lumi-iphone-swipe_0.jpg',
+      'http://switcher.sooperthemes.com/?theme=lumi',
+      NULL,
+    ),
+    'synopsis' => array(
+      'Synopsis',
+      'http://www.sooperthemes.com/sites/default/files/product-images/main-screenshot/synopsis-456_0.png',
+      'http://switcher.sooperthemes.com/?theme=synopsis',
+      NULL,
+    ),
+    'deviant' => array(
+      'Deviant',
+      'http://www.sooperthemes.com/sites/default/files/product-images/main-screenshot/deviant-iphone_0.jpg',
+      'http://switcher.sooperthemes.com/?theme=deviant',
+      NULL,
+    ),
+    'urgency' => array(
+      'Urgency',
+      'http://www.sooperthemes.com/sites/default/files/product-images/main-screenshot/urgency-456_0.png',
+      'http://switcher.sooperthemes.com/?theme=urgency',
+      NULL,
+    ),
+    'beau' => array(
+      'Beau',
+      'http://www.sooperthemes.com/sites/default/files/product-images/main-screenshot/beau-456_0.jpg',
+      'http://switcher.sooperthemes.com/?theme=beau',
+      NULL,
+    ),
+    'gently' => array(
+      'Gently',
+      'http://www.sooperthemes.com/sites/default/files/product-images/main-screenshot/gently-456_0.jpg',
+      'http://switcher.sooperthemes.com/?theme=gently',
+      NULL,
+    ),
+    'syan' => array(
+      'Syan',
+      'http://www.sooperthemes.com/sites/default/files/product-images/main-screenshot/syan-456_1.jpg',
+      'http://switcher.sooperthemes.com/?theme=syan',
+      NULL,
+    ),
+    'hellofolio' => array(
+      'HelloFolio',
+      'http://www.sooperthemes.com/sites/default/files/product-images/main-screenshot/hellofolio-iphone_0.jpg',
+      'http://switcher.sooperthemes.com/?theme=hellofolio',
+      NULL,
+    ),
+    'newmedia' => array(
+      'NewMedia',
+      'http://www.sooperthemes.com/sites/default/files/product-images/main-screenshot/newmedia-456_0.png',
+      'http://switcher.sooperthemes.com/?theme=newmedia',
+      NULL,
+    ),
+    'prophoto' => array(
+      'ProPhoto',
+      'http://www.sooperthemes.com/sites/default/files/product-images/main-screenshot/prophoto_0.jpg',
+      'http://switcher.sooperthemes.com/?theme=prophoto',
+      NULL,
+    ),
+    'cuttingedge' => array(
+      'CuttingEdge',
+      'http://www.sooperthemes.com/sites/default/files/product-images/main-screenshot/cuttingedge-456_0.png',
+      'http://switcher.sooperthemes.com/?theme=cuttingedge',
+      NULL,
+    ),
+    'galaxy' => array(
+      'Galaxy',
+      'http://www.sooperthemes.com/sites/default/files/product-images/main-screenshot/galaxy-456_0.png',
+      'http://switcher.sooperthemes.com/?theme=galaxy',
+      NULL,
+    ),
+  );
+  $theme_grid = '<div class="theme-grid" style="overflow:hidden;"><p><a class="theme-grid-expand" href="#">Show all premium themes +</a></p>';
+  foreach ($themes_list as $theme => $theme_data) {
+    $image = array(
+      'path' => $theme_data[1],
+      'alt' => $theme_data[0],
+    );
+    $theme_grid .= '<div style="float:left;height:250px;width:240px;padding:10px 20px 20px 20px;margin:20px 20px 0 0;border:1px solid #eee;overflow:hidden;">';
+    $theme_grid .= '<h3>' . $theme_data[0] . '</h3><p>';
+    $theme_grid .= l('Theme page', 'http://www.sooperthemes.com/drupal-themes/' . $theme);
+    $theme_grid .= " | ";
+    $theme_grid .= l('Demo', $theme_data[2]);
+    if (isset($theme_data[3])) $theme_grid .= " | " . l('Showcase', $theme_data[3]);
+    $theme_grid .= '</p>';
+    $theme_grid .= theme('image', $image);
+    $theme_grid .= '</div>';
+  }
+  $theme_grid .= '</div>';
+
+  $output .= $theme_grid;
+
+  $output .= '<br /><br /><h3 style="clear:both;">' . t('Free themes, maintained by SooperThemes') . '</h3>';
+  // Get current list of themes.
+  $themes_list = array(
+    'nexus' => array(
+      'Nexus Bootstrap 3',
+      'https://www.drupal.org/files/styles/grid-3/public/project-images/nexus_theme.png',
+      'http://cms-demo.sooperthemes.com/',
+      NULL,
+    ),
+    'cms_bootstrap3' => array(
+      'Powerstart Bootstrap 3',
+      'https://www.drupal.org/files/project-images/powerstart-logo-2-500-nosidemargin_9.png',
+      'http://cms-demo.sooperthemes.com/',
+      NULL,
+    ),
+    'multipurpose' => array(
+      'Multipurpose Theme',
+      'https://www.drupal.org/files/styles/grid-3/public/project-images/multipurpose-drupal-theme.png',
+      'http://multipurpose.techsaran.com/',
+      NULL,
+    ),
+    'blogger_theme' => array(
+      'Blogger theme',
+      'https://www.drupal.org/files/styles/grid-3/public/project-images/blogger_theme.png',
+      'http://blogger.techsaran.com/',
+      NULL,
+    ),
+    'venture_theme' => array(
+      'Venture Theme',
+      'https://www.drupal.org/files/styles/grid-3/public/project-images/venture_theme.png',
+      'http://venture.techsaran.com/',
+      NULL,
+    ),
+    'touchpro' => array(
+      'TouchPro',
+      'https://www.drupal.org/files/styles/grid-3/public/images/touchpro-free-iphone.jpg?itok=FKtmdxVb',
+      'http://switcher.sooperthemes.com/?theme=touchpro',
+      NULL,
+    ),
+    'corporate_agency' => array(
+      'Corporate Agency',
+      'https://www.drupal.org/files/styles/grid-3/public/project-images/corporate_agency.png',
+      'http://corporate-agency.techsaran.com/',
+      NULL,
+    ),
+    'classic_blog' => array(
+      'Classic Blog',
+      'https://www.drupal.org/files/styles/grid-3/public/project-images/classic_blog.png',
+      'http://classic-blog.techsaran.com/',
+      NULL,
+    ),
+    'business' => array(
+      'Business',
+      'https://www.drupal.org/files/styles/grid-3/public/images/Business%20theme.png?itok=_YckpfzZ',
+      'http://business-theme.techsaran.com/',
+      NULL,
+    ),
+    'professional_theme' => array(
+      'Professional Theme',
+      'https://www.drupal.org/files/styles/grid-3/public/project-images/professionaldesk.png?itok=FucoBML3',
+      'http://professional-theme.techsaran.com/',
+      NULL,
+    ),
+    'responsive' => array(
+      'Premium Responsive',
+      'https://www.drupal.org/files/styles/grid-3/public/project-images/premium_responsive_desktopview.png?itok=yG0_Lbne',
+      'http://premium-responsive.techsaran.com/',
+      NULL,
+    ),
+    'responsive_blog' => array(
+      'Responsive Blog',
+      'https://www.drupal.org/files/styles/grid-3/public/project-images/responsive_blog.png?itok=7iurHWDD',
+      'http://responsive-blog.techsaran.com/',
+      NULL,
+    ),
+    'best_responsive' => array(
+      'Best Responsive',
+      'https://www.drupal.org/files/styles/grid-3/public/project-images/best_responsive.png?itok=PFx7SXbg',
+      'http://www.devsaran.com/theme/best_responsive/',
+      NULL,
+    ),
+    'corporate' => array(
+      'Simple Corporate',
+      'https://www.drupal.org/files/styles/grid-3/public/project-images/simple_corporate_white.png?itok=twm2tK_Cg',
+      'http://simple-corporate.techsaran.com/',
+      NULL,
+    ),
+    'responsive_business' => array(
+      'Responsive Business',
+      'https://www.drupal.org/files/styles/grid-3/public/project-images/responsive_business_desktop_0.png?itok=tA2OxPQy',
+      'http://responsive-business.techsaran.com/',
+      NULL,
+    ),
+    'creative' => array(
+      'Creative Theme',
+      'https://www.drupal.org/files/styles/grid-3/public/project-images/creative_theme.png?itok=mp7zvn3U',
+      'http://creative.techsaran.com/',
+      NULL,
+    ),
+    'fresh' => array(
+      'Fresh Theme',
+      'https://www.drupal.org/files/styles/grid-3/public/images/FreshTheme.jpg?itok=MuTseYYv',
+      'http://fresh-theme.techsaran.com/',
+      NULL,
+    ),
+    'dark_elegant' => array(
+      'Dark Elegant',
+      'https://www.drupal.org/files/styles/grid-3/public/project-images/dark_elegant.png?itok=Ebz8o9px',
+      'http://dark-elegant.techsaran.com/',
+      NULL,
+    ),
+    'impact_theme' => array(
+      'Impact Theme',
+      'https://www.drupal.org/files/styles/grid-3/public/project-images/impact_theme_0.png?itok=-rNL6P55',
+      'http://impact-theme.techsaran.com/',
+      NULL,
+    ),
+    'clean_theme' => array(
+      'Clean Theme',
+      'https://www.drupal.org/files/styles/grid-3/public/project-images/clean_theme.png?itok=Prj18YSD',
+      'http://clean-theme.techsaran.com/',
+      NULL,
+    ),
+    'company' => array(
+      'Company Theme',
+      'https://www.drupal.org/files/styles/grid-3/public/project-images/Company_theme.png?itok=hcgI1rFt',
+      'http://company-theme.techsaran.com/',
+      NULL,
+    ),
+    'elegant_theme' => array(
+      'Elegant Theme',
+      'https://www.drupal.org/files/styles/grid-3/public/project-images/elegant_theme..png?itok=sQHiMFp0',
+      'http://elegant-theme.techsaran.com/',
+      NULL,
+    ),
+    'black_premium' => array(
+      'Black Premium',
+      'https://www.drupal.org/files/styles/grid-3/public/images/Black%20Premium.png?itok=fSp2XkT8',
+      'http://black-premium.techsaran.com/',
+      NULL,
+    ),
+    'premium_corporate' => array(
+      'Premium Corporate',
+      'https://www.drupal.org/files/styles/grid-3/public/project-images/premium_corporate_0.png?itok=-rqC7vw4',
+      'http://premium-corporate.techsaran.com/',
+      NULL,
+    ),
+    'splendio' => array(
+      'Splendio',
+      'https://www.drupal.org/files/styles/grid-3/public/images/splendio1.png?itok=9TzilDxo',
+      'http://splendio.techsaran.com/',
+      NULL,
+    ),
+    'beauty_theme' => array(
+      'Beauty Theme',
+      'https://www.drupal.org/files/styles/grid-3/public/project-images/beauty_theme.png?itok=i-XPz2D3',
+      'http://beauty-theme.techsaran.com/',
+      NULL,
+    ),
+  );
+  $theme_grid = '<div class="theme-grid" style="overflow:hidden;"><p><a class="theme-grid-expand" href="#">Show all free themes +</a></p>';
+  foreach ($themes_list as $theme => $theme_data) {
+    $image = array(
+      'path' => $theme_data[1],
+      'alt' => $theme_data[0],
+    );
+    $theme_grid .= '<div style="float:left;height:300px;width:240px;padding:10px 20px 20px 20px;margin:20px 20px 20px 0;border:1px solid #eee;overflow:hidden;">';
+    $theme_grid .= '<h4>' . $theme_data[0] . '</h4><p>';
+    $theme_grid .= l('Project page', 'https://www.drupal.org/project/' . $theme);
+    $theme_grid .= " | ";
+    $theme_grid .= l('Demo', $theme_data[2]);
+    if (isset($theme_data[3])) $theme_grid .= " | " . l('Showcase', $theme_data[3]);
+    $theme_grid .= '</p>';
+    $theme_grid .= theme('image', $image);
+    $theme_grid .= '</div>';
+  }
+  $theme_grid .= '</div>';
+
+  $output .= $theme_grid;
+
+  return $output;
+}

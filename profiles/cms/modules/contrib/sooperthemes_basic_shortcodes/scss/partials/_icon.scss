@@ -1,0 +1,115 @@
+//
+// Icons shortcode styling
+//
+
+
+// Font Awesome Icon
+
+.fa {
+	box-sizing: content-box; // Needed for proper padding support in fixed width (.fw) icons
+	text-align:center;
+	line-height:1.28571429em; // based on Font Awesome fa-fw style (fixed width)
+	width:1.28571429em;
+	height:1.28571429em;
+	padding:0.2em;
+	color:inherit;
+	// Icon Styles
+	&.icon-circle {
+		border-radius: 50%;
+		background: #333;
+		color:#fff;
+	padding:0.4em;
+	}
+	&.icon-square {
+		border-radius: 0;
+		background: #333;
+		color:#fff;
+	padding:0.4em;
+	}
+	&.icon-rounded {
+		border-radius: 4px;
+		background: #333;
+		color:#fff;
+	padding:0.4em;
+	}
+	// Icon border switch
+	&.icon-border {
+		border: 1px solid #444;
+		background:transparent;
+		color:#333;
+	padding:0.4em;
+	}
+}
+
+// CSS3 Hover Effects
+// based on http://tympanus.net/codrops/?p=15265
+.icon-fx {
+  border-radius: 50%;
+  display: inline-block;
+  position: relative;
+  text-align: center;
+  z-index: 1;
+}
+.icon-fx:before {
+}
+.icon-fx:after {
+	pointer-events: none;
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	border-radius: 50%;
+	content: '';
+	-webkit-box-sizing: content-box;
+	-moz-box-sizing: content-box;
+	box-sizing: content-box;
+}
+
+.icon-fx-disc {
+	-webkit-transition: background 0.2s, color 0.2s;
+	-moz-transition: background 0.2s, color 0.2s;
+	transition: background 0.2s, color 0.2s;
+}
+
+.icon-fx-disc:after {
+	top: -7px;
+	left: -7px;
+	padding: 7px;
+	background:inherit;
+	z-index:-1;
+	-webkit-transition: -webkit-transform 0.2s, opacity 0.2s;
+	-webkit-transform: scale(.8);
+	-moz-transition: -moz-transform 0.2s, opacity 0.2s;
+	-moz-transform: scale(.8);
+	-ms-transform: scale(.8);
+	transition: transform 0.2s, opacity 0.2s;
+	transform: scale(.8);
+	opacity: 0;
+}
+
+.icon-fx-disc:hover:after {
+	@include scale(1.2);
+	opacity:1;
+}
+
+.icon-fx-pulse {
+	-webkit-transition: color 0.3s;
+	-moz-transition: color 0.3s;
+	transition: color 0.3s;
+}
+
+.icon-fx-pulse:after {
+	top: -2px;
+	left: -2px;
+	padding: 2px;
+	z-index: -1;
+	background: inherit;
+	-webkit-transition: -webkit-transform 0.25s, opacity 0.35s;
+	-moz-transition: -moz-transform 0.25s, opacity 0.35s;
+	transition: transform 0.25s, opacity 0.35s;
+	@include scale(0.7);
+}
+
+.icon-fx-pulse:hover:after {
+	@include scale(1.5);
+	opacity: 0;
+}

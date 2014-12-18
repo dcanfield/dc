@@ -1,0 +1,33 @@
+name = CMS Contact content
+description = Contact form for CMS Contact module
+core = 7.x
+package = CMS
+
+project = cms_contact_content
+dependencies[] = features
+dependencies[] = uuid
+dependencies[] = uuid_features
+dependencies[] = webform
+__drupal_alter_by_ref[][node][webform] = webform
+features[ctools][] = strongarm:strongarm:1
+features[features_api][] = api:2
+features[uuid_node][] = 52ec77c2-0281-4140-b891-1aff2cb69709
+features[variable][] = comment_anonymous_webform
+features[variable][] = comment_default_mode_webform
+features[variable][] = comment_default_per_page_webform
+features[variable][] = comment_form_location_webform
+features[variable][] = comment_preview_webform
+features[variable][] = comment_subject_field_webform
+features[variable][] = comment_webform
+features[variable][] = menu_options_webform
+features[variable][] = menu_parent_webform
+features_exclude[dependencies][cms_contact] = cms_contact
+features_exclude[dependencies][strongarm] = strongarm
+project path = sites/all/modules/cms/cms_contact
+
+; Information added by Drupal.org packaging script on 2014-12-11
+version = "7.x-1.0-beta15"
+core = "7.x"
+project = "cms_contact"
+datestamp = "1418317364"
+

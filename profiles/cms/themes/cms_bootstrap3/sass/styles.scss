@@ -1,0 +1,290 @@
+//
+// Author: Jurriaan Roelofs,  SooperThemes
+// This stylesheet uses Bootstrap 3, but it only loads the mixins,
+// not the entire bootstrap stack. This way we can still leverage the
+// highly optimized bootstrap CDN.
+//
+// We extend the theme with bootstrap classes using jQuery instead of sass @extend
+// in order to have a lightweight, lightning fast theme that still supports all browsers.
+//
+
+// Import variables
+@import "variables";
+
+// Bootstrap framework
+@import "bootstrap/variables";
+@import "bootstrap/mixins";
+
+// Custom includes
+@import "admin";
+
+
+body {
+	padding-top:40px;
+}
+
+// Typography
+
+.page-header,
+h1, .h1, h2, .h2, h3, .h3 {
+	margin-top:0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	font-weight:normal;
+}
+
+label {
+	display:block;
+}
+
+.content h1,
+.content .h1,
+.content h2,
+.content .h2,
+.content h3,
+.content .h3 {
+	margin-top: 20px;
+	margin-bottom:20px;
+}
+
+.content img {
+	margin-top:0;
+	margin-bottom:20px;
+}
+
+// Bootstrap extensions and overrides
+
+.jumbotron.phototron {
+	position:relative;
+	color:#fff;
+	h2 {
+		color:#fff;
+		position:relative;
+		z-index:1;
+		margin:0;
+		padding-bottom:15px;
+	}
+	p {
+		margin:0;
+	}
+	.phototron-image {
+		position:absolute;
+		width:100%;
+		top:0;
+		left:0;
+		z-index:0;
+		border-radius:6px;
+	}
+	a {
+		color:#fff;
+		text-decoration:underline;
+		&:hover, &:focus {
+			text-decoration:none;
+		}
+	}
+}
+
+// Image treatment
+
+img {
+	@include img-responsive;
+}
+
+.field-type-image img, .user-picture img {
+  margin: 0 0 1em;
+}
+
+.region-sidebar-first .block,
+.region-sidebar-second .block {
+	margin-bottom:30px;
+}
+
+.user-picture img {
+	border:4px double $grayLighter;
+}
+
+// Region adjustments
+
+.region-footer {
+	padding:60px 0;
+	margin-top:60px;
+	border-top:1px solid $grayLighter;
+	.block {
+		margin:20px 0;
+	}
+}
+
+.region-footer .block-menu ul {
+	text-align:center;
+	li {
+		display:inline-block;
+	}
+}
+
+.block {
+	margin-bottom: 30px;
+}
+
+// Nodes
+
+.node {
+	.submitted {
+		color:$grayLight;
+		padding-top:5px;
+		padding-bottom:5px;
+		a {
+			text-decoration: underline;
+			color: $grayLight;
+		}
+	}
+	.field-name-body {
+		padding-top:5px;
+		padding-bottom:5px;
+	}
+	.links {
+		float: right;
+		clear:both;
+		@include clearfix;
+		margin-top:20px;
+		margin-bottom:20px;
+	}
+}
+
+// Blog
+
+.node-blog {
+	position:relative;
+	margin-bottom:30px;
+	padding-bottom:30px;
+	border-bottom:1px solid $grayLighter;
+	.user-picture {
+		width:11.111%;
+		position:absolute;
+		top:0;
+		left:0;
+		background:#fff;
+		padding-bottom:2px;
+		padding-right:30px;
+	}
+	>header,
+	>.content,
+	>footer {
+		border-left:2px solid $grayLighter;
+		padding-left:7.255%;
+		margin-left:3.855%;
+		margin-top:0;
+		margin-bottom:0;
+	}
+	.content >img {
+		margin-bottom: 30px;
+	}
+}
+
+.field-blog-tags {
+	display:inline-block;
+}
+
+// Portfolio
+
+.view-display-id-portfolio {
+	.row {
+		margin-bottom: 30px;
+	}
+}
+
+.node-portfolio {
+	.content {
+		ul {
+			margin:0;
+			padding:0;
+			list-style:none;
+			list-style-type:none;
+			li {
+				padding-top:30px;
+				padding-bottom:30px;
+				img {
+					margin-top:0;
+					margin-bottom:0;
+				}
+				blockquote {
+					font-size: $baseFontSize;
+					border:none;
+					padding-top:0;
+				}
+			}
+		}
+	}
+}
+
+#block-views-cms-portfolio-portfolio-block .block-title {
+	text-align:center;
+}
+
+// News
+
+.node-news {
+	border-bottom:1px solid $grayLighter;
+	margin-bottom:30px;
+}
+
+// Events
+
+#block-system-main .view-cms-events {
+	.view-content >h3 {
+		margin-top:20px;
+		margin-bottom:20px;
+	}
+	.views-row {
+		border-bottom:1px solid $grayLighter;
+		margin-bottom:2px;
+	}
+}
+
+// Squish forms
+
+.node-webform {
+	@include make-sm-column(8);
+	@include make-sm-column-offset(2);
+}
+
+.page-user #block-system-main {
+	@include make-sm-column(8);
+	@include make-sm-column-offset(2);
+}
+
+// Comments
+
+#comments {
+	margin-top:30px;
+	margin-bottom:30px;
+	padding-top:1px;
+	padding-bottom:1px;
+	clear:both;
+	.comment {
+		margin-bottom:1em;
+		padding-bottom:1em;
+	}
+}
+
+// Common components
+
+span.new {
+	font-style:italic;
+	display:inline-block;
+	padding:1em 0;
+}
+
+.tabs--primary {
+	margin-bottom:30px;
+}
+
+// Photographic enhancement of Bootstrap3 jumbotron
+.phototron {
+	padding: 140px 100px;
+	overflow:hidden;
+	p {
+		padding-left:0;
+		padding-right:0;
+	}
+}

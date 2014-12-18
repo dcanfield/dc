@@ -1,0 +1,15 @@
+name = SooperThemes Basic Shortcodes
+description = Provides shortcodes for basic styling including content boxes, icons, contact information, social links, dividers
+package = Shortcode
+core = 7.x
+dependencies[] = filter
+dependencies[] = shortcode
+dependencies[] = jsdelivr
+package = SooperThemes Basic
+
+; Information added by Drupal.org packaging script on 2014-11-06
+version = "7.x-1.0-beta5"
+core = "7.x"
+project = "sooperthemes_basic_shortcodes"
+datestamp = "1415278269"
+

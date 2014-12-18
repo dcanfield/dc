@@ -1,0 +1,25 @@
+name = Profiler
+description = Library library that allows an install profile to be defined as a Drupal .info file.
+core = 7.x
+
+; Information added by drupal.org packaging script on 2011-08-15
+version = "7.x-2.0-beta1"
+core = "7.x"
+project = "profiler"
+datestamp = "1313420220"
+
+
+
+; Information added by drush on 2014-08-12
+version = "7.x-2.x-dev"
+core = "7.x"
+project = "profiler"
+datestamp = "1407850524"
+
+
+; Information added by Drupal.org packaging script on 2014-12-12
+version = "7.x-1.0-beta15"
+core = "7.x"
+project = "cms"
+datestamp = "1418375367"
+

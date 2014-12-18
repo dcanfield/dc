@@ -1,0 +1,11 @@
+name = Block Shortcodes
+description = Sets up a custom filter that enables block shortcodes.
+core = 7.x
+dependencies[] = block
+
+
+; Information added by drush on 2014-12-12
+version = ""
+project = "block_shortcode"
+datestamp = "1418375371"
+

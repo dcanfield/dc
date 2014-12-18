@@ -1,0 +1,122 @@
+//
+// Content box shortcode styling
+//
+$icon-spacer-lg: 6em;
+$icon-spacer-2x: 5.25em;
+$icon-spacer-3x: 7.3em;
+$icon-spacer-4x: 9.4em;
+$icon-spacer-5x: 11.5em;
+.content-box {
+  display:inline-block;
+  padding:0.4em;
+  position:relative;
+  box-sizing: border-box;
+  width:100%;
+  margin-bottom:30px;
+  .content-box-heading {
+    padding-bottom:15px;
+    h2 {
+      clear:none;
+    }
+  }
+  // Layout
+  &.content-box-icon-inline-title {
+    display:table;
+  	.span-icon, h2 {
+  		display:table-cell;
+      vertical-align:top;
+  	}
+    .span-icon {
+      padding-right:15px;
+    }
+  }
+  &.content-box-no-icon h2 {
+    display:block;
+  }
+  &.content-box-icon-boxed {
+    background:#eee;
+    padding:50px 3% 30px 3%;
+    text-align:center;
+    i {
+      position:absolute;
+      top:-0.9em;
+      margin-left:-1em;
+    }
+    &.content-box-2x-icon {
+      margin-top:30px;
+    }
+    &.content-box-3x-icon {
+      margin-top:40px;
+    }
+    &.content-box-4x-icon {
+      margin-top:50px;
+    }
+    &.content-box-5x-icon {
+      margin-top:70px;
+    }
+  }
+  &.content-box-icon-adjacent {
+    .span-icon {
+      margin-left: -$icon-spacer-lg;
+      float:left;
+    }
+  	.content-box-content,
+    .content-box-heading {
+  		padding-left: $icon-spacer-lg;
+  	}
+    &.content-box-2x-icon {
+      .span-icon {
+        margin-left: -$icon-spacer-2x;
+      }
+      .content-box-content,
+      .content-box-heading {
+        padding-left: $icon-spacer-2x;
+      }
+    }
+    &.content-box-3x-icon {
+      .span-icon {
+        margin-left: -$icon-spacer-3x;
+      }
+      .content-box-content,
+      .content-box-heading {
+        padding-left: $icon-spacer-3x;
+      }
+    }
+    &.content-box-4x-icon {
+      .span-icon {
+        margin-left: -$icon-spacer-4x;
+      }
+      .content-box-content,
+      .content-box-heading {
+        padding-left: $icon-spacer-4x;
+      }
+    }
+    &.content-box-5x-icon {
+      .span-icon {
+        margin-left: -$icon-spacer-5x;
+      }
+      .content-box-content,
+      .content-box-heading {
+        padding-left: $icon-spacer-5x;
+      }
+    }
+  }
+  // Border
+  &.content-box-border {
+    padding:15px 3%;
+  	border:1px solid #eee;
+		text-align:center;
+  }
+  &.content-box-border-top {
+    border-width:3px 0 0 0;
+  }
+  &.content-box-border-bottom {
+    border-width:0 0 3px 0;
+  }
+  // Style
+  &.content-box-rounded {
+  	border-radius: 4px;
+  	background:#eee;
+		text-align:center;
+  }
+}

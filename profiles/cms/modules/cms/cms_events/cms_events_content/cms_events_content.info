@@ -1,0 +1,38 @@
+name = CMS Events Content
+description = Demo content for CMS Events module
+core = 7.x
+package = CMS
+project = cms_events_content
+dependencies[] = cms_events
+dependencies[] = ctools
+dependencies[] = features
+dependencies[] = strongarm
+dependencies[] = uuid_features
+__drupal_alter_by_ref[][node][event] = event
+features[ctools][] = strongarm:strongarm:1
+features[features_api][] = api:2
+features[uuid_node][] = 48883b0b-2c9f-449c-b9c0-ea027e23c729
+features[uuid_node][] = c8bd6aab-2deb-4e45-a212-4ac5fcb59557
+features[uuid_node][] = ed670241-b0ab-468a-a377-58817c110128
+features[variable][] = comment_anonymous_event
+features[variable][] = comment_default_mode_event
+features[variable][] = comment_default_per_page_event
+features[variable][] = comment_form_location_event
+features[variable][] = comment_preview_event
+features[variable][] = comment_subject_field_event
+features[variable][] = menu_options_event
+features[variable][] = menu_parent_event
+features_exclude[dependencies][cms_event_registrations] = cms_event_registrations
+features_exclude[dependencies][cms_blog] = cms_blog
+features_exclude[dependencies][bg_image_formatter] = bg_image_formatter
+features_exclude[dependencies][media] = media
+features_exclude[field_base][field_glazed_header_image] = field_glazed_header_image
+features_exclude[field_instance][node-event-field_glazed_header_image] = node-event-field_glazed_header_image
+project path = sites/all/modules/cms/cms_events
+
+; Information added by Drupal.org packaging script on 2014-12-11
+version = "7.x-1.0-beta15"
+core = "7.x"
+project = "cms_events"
+datestamp = "1418317354"
+
